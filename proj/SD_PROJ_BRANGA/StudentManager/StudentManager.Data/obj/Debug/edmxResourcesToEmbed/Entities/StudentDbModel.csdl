@@ -1,0 +1,74 @@
+﻿<?xml version="1.0" encoding="utf-8"?>
+<Schema Namespace="StudentDbModel" Alias="Self" annotation:UseStrongSpatialTypes="false" xmlns:annotation="http://schemas.microsoft.com/ado/2009/02/edm/annotation" xmlns:customannotation="http://schemas.microsoft.com/ado/2013/11/edm/customannotation" xmlns="http://schemas.microsoft.com/ado/2009/11/edm">
+  <EntityContainer Name="StudentDbEntities" annotation:LazyLoadingEnabled="true">
+    <EntitySet Name="Users" EntityType="StudentDbModel.User" />
+    <EntitySet Name="Subjects" EntityType="StudentDbModel.Subject" />
+    <EntitySet Name="Enrollments" EntityType="StudentDbModel.Enrollment" />
+    <AssociationSet Name="FK_Enrollments_Subjects" Association="StudentDbModel.FK_Enrollments_Subjects">
+      <End Role="Subject" EntitySet="Subjects" />
+      <End Role="Enrollment" EntitySet="Enrollments" />
+    </AssociationSet>
+    <AssociationSet Name="FK_Enrollments_Users" Association="StudentDbModel.FK_Enrollments_Users">
+      <End Role="User" EntitySet="Users" />
+      <End Role="Enrollment" EntitySet="Enrollments" />
+    </AssociationSet>
+  </EntityContainer>
+  <EntityType Name="User">
+    <Key>
+      <PropertyRef Name="UserId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="Id" Type="String" Nullable="false" MaxLength="128" FixedLength="false" Unicode="true" />
+    <Property Name="UserName" Type="String" Nullable="false" MaxLength="50" FixedLength="false" Unicode="true" />
+    <Property Name="StudentCurrentYear" Type="Int32" />
+    <Property Name="StudentIdNumber" Type="String" MaxLength="100" FixedLength="false" Unicode="true" />
+    <Property Name="LastName" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+    <Property Name="FirstName" Type="String" Nullable="false" MaxLength="45" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Enrollments" Relationship="StudentDbModel.FK_Enrollments_Users" FromRole="User" ToRole="Enrollment" />
+  </EntityType>
+  <EntityType Name="Subject">
+    <Key>
+      <PropertyRef Name="SubjectId" />
+    </Key>
+    <Property Name="SubjectId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+    <Property Name="SubjectName" Type="String" Nullable="false" MaxLength="55" FixedLength="false" Unicode="true" />
+    <Property Name="SubjectYear" Type="Int32" Nullable="false" />
+    <Property Name="Observations" Type="String" MaxLength="255" FixedLength="false" Unicode="true" />
+    <NavigationProperty Name="Enrollments" Relationship="StudentDbModel.FK_Enrollments_Subjects" FromRole="Subject" ToRole="Enrollment" />
+  </EntityType>
+  <EntityType Name="Enrollment">
+    <Key>
+      <PropertyRef Name="UserId" />
+      <PropertyRef Name="SubjectId" />
+    </Key>
+    <Property Name="UserId" Type="Int32" Nullable="false" />
+    <Property Name="SubjectId" Type="Int32" Nullable="false" />
+    <Property Name="Grade" Type="Double" />
+    <NavigationProperty Name="Subject" Relationship="StudentDbModel.FK_Enrollments_Subjects" FromRole="Enrollment" ToRole="Subject" />
+    <NavigationProperty Name="User" Relationship="StudentDbModel.FK_Enrollments_Users" FromRole="Enrollment" ToRole="User" />
+  </EntityType>
+  <Association Name="FK_Enrollments_Subjects">
+    <End Type="StudentDbModel.Subject" Role="Subject" Multiplicity="1" />
+    <End Type="StudentDbModel.Enrollment" Role="Enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="Subject">
+        <PropertyRef Name="SubjectId" />
+      </Principal>
+      <Dependent Role="Enrollment">
+        <PropertyRef Name="SubjectId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+  <Association Name="FK_Enrollments_Users">
+    <End Type="StudentDbModel.User" Role="User" Multiplicity="1" />
+    <End Type="StudentDbModel.Enrollment" Role="Enrollment" Multiplicity="*" />
+    <ReferentialConstraint>
+      <Principal Role="User">
+        <PropertyRef Name="UserId" />
+      </Principal>
+      <Dependent Role="Enrollment">
+        <PropertyRef Name="UserId" />
+      </Dependent>
+    </ReferentialConstraint>
+  </Association>
+</Schema>
