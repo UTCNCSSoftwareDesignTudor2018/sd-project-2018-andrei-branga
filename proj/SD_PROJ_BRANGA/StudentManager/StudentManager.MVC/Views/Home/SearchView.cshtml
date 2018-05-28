@@ -1,0 +1,48 @@
+﻿@using System.Web.UI.WebControls
+@model Restaurant.MVC.Models.SearchViewModel
+
+@using (Html.BeginForm()) 
+{
+    @Html.AntiForgeryToken()
+    
+    <div class="form-horizontal">
+        <h4>SearchViewModel</h4>
+        <hr />
+        @Html.ValidationSummary(true, "", new { @class = "text-danger" })
+        
+        <div class="form-group">
+            @Html.DevExpress().DateEditFor(m=>m.startDate, c =>
+            {
+                c.Name = "startDate";
+                c.Properties.Width=Unit.Percentage(100);
+                c.Properties.Caption = "Check-in";
+            }).GetHtml()
+        </div>
+        
+        <div class="form-group">
+            @Html.DevExpress().DateEditFor(m=>m.endDate, c =>
+            {
+                c.Name = "endDate";
+                c.Properties.Caption = "Check-out";
+
+            }).GetHtml()
+        </div>
+        
+        <div class="form-group">
+            @Html.DevExpress().ComboBoxFor(m=>m.RoomType, s =>
+       {
+           s.Name = "RoomType";
+           s.Properties.HelpText = "Select the room type!";
+           s.Properties.TextField = "RoomType1";
+           s.Properties.ValueField = "RoomTypeId";
+           s.Properties.ValueType = typeof(int);
+       }).BindList((IEnumerable<RoomTypeViewModel>)(ViewBag.RoomTypes)).GetHtml()
+        </div>
+
+        <div class="form-group">
+            <div class="col-md-offset-2 col-md-10">
+                <input type="submit" value="Create" text="Search" class="btn btn-default" />
+            </div>
+        </div>
+    </div>
+}

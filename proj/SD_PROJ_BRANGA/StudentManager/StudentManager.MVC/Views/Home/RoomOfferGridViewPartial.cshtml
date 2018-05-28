@@ -1,0 +1,93 @@
+﻿@using System.Web.UI.WebControls
+
+﻿@functions{
+    object GetEditingProduct(ASPxGridView grid)
+    {
+        if (grid.IsNewRowEditing)
+            return new RoomOfferViewModel();
+        return grid.GetRow(grid.EditingRowVisibleIndex);
+    }
+}
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "OffersGrid";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "RoomOffersGridViewPartial", roomId = ViewData["RoomId"] };
+
+        settings.SettingsEditing.AddNewRowRouteValues = new { Controller = "Home", Action = "RoomOffersGridViewPartialAddNew", roomId = ViewData["RoomId"] };
+        settings.SettingsEditing.DeleteRowRouteValues = new { Controller = "Home", Action = "RoomOffersGridViewPartialDelete", roomId = ViewData["RoomId"] };
+        settings.SettingsEditing.Mode = GridViewEditingMode.PopupEditForm;
+        settings.SettingsBehavior.ConfirmDelete = true;
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = true;
+        settings.CommandColumn.ShowDeleteButton = true;
+        settings.CommandColumn.ShowEditButton = false;
+
+
+
+
+
+        settings.KeyFieldName = "OfferId";
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = true;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCellsWindowLimit;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("RoomName");
+        settings.Columns.Add("RoomType");
+        settings.Columns.Add("Hotel");
+        settings.Columns.Add("Chain");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "StartDate";
+            c.EditorProperties().DateEdit(p =>
+            {
+                
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EndDate";
+            c.EditorProperties().DateEdit(p =>
+            {
+                
+            });
+        });
+        settings.Columns.Add("EndDate");
+        settings.Columns.Add("Price").PropertiesEdit.DisplayFormatString="f";
+
+
+
+
+
+
+        settings.EditFormLayoutProperties.ColCount = 2;
+        settings.EditFormLayoutProperties.Items.Add("StartDate");
+        settings.EditFormLayoutProperties.Items.Add("EndDate");
+        settings.EditFormLayoutProperties.Items.Add("Price");
+
+        settings.EditFormLayoutProperties.Items.AddCommandItem(itemSettings =>
+        {
+            itemSettings.Width = Unit.Percentage(100);
+            itemSettings.HorizontalAlign = FormLayoutHorizontalAlign.Right;
+        });
+        settings.EditFormLayoutProperties.SettingsAdaptivity.AdaptivityMode = FormLayoutAdaptivityMode.SingleColumnWindowLimit;
+        settings.EditFormLayoutProperties.SettingsAdaptivity.SwitchToSingleColumnAtWindowInnerWidth = 700;
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+

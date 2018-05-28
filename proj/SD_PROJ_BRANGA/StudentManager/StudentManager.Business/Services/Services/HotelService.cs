@@ -147,5 +147,17 @@ namespace Restaurant.Business.Services.Services
                 throw new Exception("Cannot delete room offer because it has related stuff!");
             }
         }
+
+
+
+        public IQueryable<RoomOfferModel> GetSuitableRoomOffers(int roomTypeId, DateTime startDate, DateTime endDate)
+        {
+            return ctx.RoomOffers.Include(p => p.HotelRoom.Hotel.HotelChain)
+                .Include(p => p.HotelRoom.RoomType).Where(
+                    p=>p.HotelRoom.RoomType.RoomTypeId==roomTypeId 
+                       && p.StartDate<=startDate
+                       && p.EndDate>=endDate
+                    ).ProjectTo<RoomOfferModel>();
+        }
     }
 }

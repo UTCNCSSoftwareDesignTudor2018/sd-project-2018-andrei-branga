@@ -20,5 +20,6 @@ namespace Restaurant.Business.Services.Services
         void AddRoomOffer(int roomId, DateTime startDate, DateTime endDate, float price);
         void DeleteRoomOffer(int roomOffer);
         RoomModel GetRoom(int id);
+        IQueryable<RoomOfferModel> GetSuitableRoomOffers(int roomTypeId, DateTime startDate, DateTime endDate);
     }
 }

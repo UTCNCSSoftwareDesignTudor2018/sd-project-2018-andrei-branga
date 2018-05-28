@@ -1,0 +1,73 @@
+﻿@using System.Web.UI.WebControls
+
+
+@{
+    var grid = Html.DevExpress().GridView(settings =>
+    {
+        settings.Name = "OffersGrid";
+        settings.CallbackRouteValues = new { Controller = "Home", Action = "RoomOffersResults", start= ViewData["Start"]
+            , end= ViewData["End"],
+            roomType= ViewData["Type"]
+        };
+
+
+        settings.CommandColumn.Visible = true;
+        settings.CommandColumn.ShowNewButton = false;
+        settings.CommandColumn.ShowDeleteButton = false;
+        settings.CommandColumn.ShowEditButton = false;
+
+
+
+
+
+        settings.KeyFieldName = "OfferId";
+        settings.Width = Unit.Percentage(100);
+        settings.SettingsPager.Visible = true;
+        settings.Settings.ShowGroupPanel = true;
+        settings.Settings.ShowFilterRow = false;
+        settings.SettingsBehavior.AllowSelectByRowClick = true;
+
+        settings.SettingsAdaptivity.AdaptivityMode = GridViewAdaptivityMode.HideDataCellsWindowLimit;
+        settings.SettingsAdaptivity.AdaptiveColumnPosition = GridViewAdaptiveColumnPosition.Right;
+        settings.SettingsAdaptivity.AdaptiveDetailColumnCount = 1;
+        settings.SettingsAdaptivity.AllowOnlyOneAdaptiveDetailExpanded = true;
+        settings.SettingsAdaptivity.HideDataCellsAtWindowInnerWidth = 0;
+
+        settings.Columns.Add("RoomName");
+        settings.Columns.Add("RoomType");
+        settings.Columns.Add("Hotel");
+        settings.Columns.Add("Chain");
+
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "StartDate";
+            c.EditorProperties().DateEdit(p =>
+            {
+
+            });
+        });
+        settings.Columns.Add(c =>
+        {
+            c.FieldName = "EndDate";
+            c.EditorProperties().DateEdit(p =>
+            {
+
+            });
+        });
+        settings.Columns.Add("EndDate");
+        settings.Columns.Add("Price").PropertiesEdit.DisplayFormatString = "f";
+
+
+
+
+
+        
+    });
+    if (ViewData["EditError"] != null)
+    {
+        grid.SetEditErrorText((string)ViewData["EditError"]);
+    }
+}
+@grid.Bind(Model).GetHtml()
+
+

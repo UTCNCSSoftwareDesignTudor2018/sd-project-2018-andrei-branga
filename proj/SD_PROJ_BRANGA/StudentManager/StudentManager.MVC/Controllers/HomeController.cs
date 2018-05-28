@@ -43,8 +43,11 @@ namespace Restaurant.MVC.Controllers
             ViewBag.Name = User.Identity.Name;
             var user = AutoMapper.Mapper.Map<UserViewModel>(
                 userService.GetUserForIdentityId(User.Identity.GetUserId()));
-            ViewBag.HotelChain = hotelServicé.GetAllHotelChains().Single(p => p.HotelChainId == user.HotelChainId)
-                .HotelChainName;
+            if (User.IsInRole("Manager"))
+            {
+                ViewBag.HotelChain = hotelServicé.GetAllHotelChains().Single(p => p.HotelChainId == user.HotelChainId)
+                    .HotelChainName;
+            }
 
             return View();
         }
@@ -207,5 +210,101 @@ namespace Restaurant.MVC.Controllers
             return PartialView("RoomsGridViewPartial", model);
         }
 
+
+
+
+        //***************************************
+
+
+        [ValidateInput(false)]
+        public ActionResult RoomOffersGridViewPartial(int roomId)
+        {
+            ViewData["RoomId"] = roomId;
+
+            var model = hotelServicé.GetAllRoomOffers(roomId).ProjectTo<RoomOfferViewModel>().ToList();
+
+            return PartialView("RoomOfferGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult RoomOffersGridViewPartialAddNew(RoomOfferViewModel item, int roomId)
+        {
+            ViewData["RoomId"] = roomId;
+
+            if (ModelState.IsValid)
+            {
+                try
+                {
+                    hotelServicé.AddRoomOffer(roomId,item.StartDate,item.EndDate,(float)item.Price);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            else
+                ViewData["EditError"] = "Please, correct all errors.";
+
+            var model = hotelServicé.GetAllRoomOffers(roomId).ProjectTo<RoomOfferViewModel>().ToList();
+
+
+            return PartialView("RoomOfferGridViewPartial", model);
+        }
+
+        [HttpPost, ValidateInput(false)]
+        public ActionResult RoomOffersGridViewPartialDelete(RoomOfferViewModel item, int roomId)
+        {
+            ViewData["RoomId"] = roomId;
+
+            if (item.OfferId >= 0)
+            {
+                try
+                {
+                    hotelServicé.DeleteRoomOffer(item.OfferId);
+                }
+                catch (Exception e)
+                {
+                    ViewData["EditError"] = e.Message;
+                }
+            }
+            var model = hotelServicé.GetAllRoomOffers(roomId).ProjectTo<RoomOfferViewModel>().ToList();
+
+
+            return PartialView("RoomOfferGridViewPartial", model);
+        }
+
+
+        public ActionResult SearchView()
+        {
+            ViewBag.RoomTypes = hotelServicé.GetAllRoomTypes().ProjectTo<RoomTypeViewModel>().ToList();
+
+            return PartialView();
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult SearchView([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]  SearchViewModel item)
+        {
+            return GetSearchResults(item);
+        }
+
+
+        public ActionResult GetSearchResults(SearchViewModel model)
+        {
+            return PartialView("SearchResultsView",model);
+        }
+
+        [ValidateInput(false)]
+        public ActionResult RoomOffersResults(DateTime start,DateTime end,int roomType)
+        {
+            ViewData["Start"] = start;
+            ViewData["End"] = end;
+            ViewData["Type"] = roomType;
+
+
+            var model = hotelServicé.GetSuitableRoomOffers(roomType,start,end).ProjectTo<RoomOfferViewModel>().ToList();
+
+            return PartialView("SearchOfferGridView", model);
+        }
     }
 }

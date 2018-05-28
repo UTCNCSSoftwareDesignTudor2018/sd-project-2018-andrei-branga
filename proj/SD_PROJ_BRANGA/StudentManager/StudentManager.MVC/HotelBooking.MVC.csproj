@@ -234,6 +234,7 @@
     <Compile Include="Models\RoomOfferViewModel.cs" />
     <Compile Include="Models\RoomTypeViewModel.cs" />
     <Compile Include="Models\RoomViewModel.cs" />
+    <Compile Include="Models\SearchViewModel.cs" />
     <Compile Include="Properties\AssemblyInfo.cs" />
     <Compile Include="Startup.cs" />
   </ItemGroup>
@@ -1434,6 +1435,10 @@
     <Content Include="Views\Home\HotelDetailsView.cshtml" />
     <Content Include="Views\Home\RoomsGridViewPartial.cshtml" />
     <Content Include="Views\Home\DetailsRoomView.cshtml" />
+    <Content Include="Views\Home\RoomOfferGridViewPartial.cshtml" />
+    <Content Include="Views\Home\SearchView.cshtml" />
+    <Content Include="Views\Home\SearchResultsView.cshtml" />
+    <Content Include="Views\Home\SearchOfferGridView.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
