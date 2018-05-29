@@ -6,7 +6,6 @@ Branga Andrei
 
 2.Design Patterns:
     - MVC
-    - Repository Pattern
     - Factory method
 
 3.Frameworks
@@ -30,7 +29,6 @@ Room-RoomType
 8.One-Many
 HotelChain-Hotels
 Hotel-Rooms
-Booking-BookingDetail
 User-Bookings
 Hotel-RoomOffers
 
