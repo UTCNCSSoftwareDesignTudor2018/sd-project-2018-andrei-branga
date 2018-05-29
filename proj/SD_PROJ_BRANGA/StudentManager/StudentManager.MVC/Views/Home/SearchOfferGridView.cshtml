@@ -18,6 +18,9 @@
 
 
 
+        settings.CommandColumn.CustomButtons.Add(new GridViewCommandColumnCustomButton { ID = "btnGetKey", Text = "Book" });
+        settings.ClientSideEvents.CustomButtonClick =
+            string.Format("function(s, e) {{ CustomButtonClick2(s, e, '{0}'); }}", Url.Action("ConfirmBooking", "Home"));
 
 
         settings.KeyFieldName = "OfferId";

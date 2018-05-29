@@ -13,3 +13,15 @@
     end=Model.endDate,
     roomType=Model.RoomType
 })
+
+<script>
+    function CustomButtonClick2(s, e, url) {
+        var key = s.GetRowKey(e.visibleIndex);
+
+
+        if (e.buttonID === "btnGetKey") {
+            var destUrl = url + "?offerId=" + key+"&start=" +'@Model.startDate.Ticks' +"&end="+'@Model.endDate.Ticks';
+            window.location.href = destUrl;
+        }
+    }
+</script>

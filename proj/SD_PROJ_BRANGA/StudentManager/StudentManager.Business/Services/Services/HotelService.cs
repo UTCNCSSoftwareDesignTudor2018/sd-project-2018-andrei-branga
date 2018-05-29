@@ -205,7 +205,7 @@ namespace Restaurant.Business.Services.Services
                 PricePerNight = offer.Price,
                 Confirmed = false,
 
-                TotalPrice = offer.Price*((start-end).Days)
+                TotalPrice = offer.Price*((end-start).Days)
             };
             ctx.Bookings.Add(booking);
             ctx.SaveChanges();

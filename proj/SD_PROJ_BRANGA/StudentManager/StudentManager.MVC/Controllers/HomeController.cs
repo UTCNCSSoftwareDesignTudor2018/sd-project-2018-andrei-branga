@@ -318,11 +318,14 @@ namespace Restaurant.MVC.Controllers
             return PartialView(model);
         }
 
-        public ActionResult ConfirmBooking(int offerId,DateTime start,DateTime end)
+        public ActionResult ConfirmBooking(int offerId,long start,long end)
         {
+            DateTime startDate=new DateTime(start);
+            DateTime endDate = new DateTime(end);
+
             var user = AutoMapper.Mapper.Map<UserViewModel>(
                 userService.GetUserForIdentityId(User.Identity.GetUserId()));
-            int id = hotelServicé.AddBooking(user.UserId, offerId, start, end);
+            int id = hotelServicé.AddBooking(user.UserId, offerId, startDate, endDate);
 
             var model = AutoMapper.Mapper.Map<BookingViewModel>(hotelServicé.GetAllBookingsForUser(user.UserId)
                 .Single(p => p.BookingId == id));
@@ -338,7 +341,7 @@ namespace Restaurant.MVC.Controllers
             if (ModelState.IsValid)
             {
                 hotelServicé.ConfirmBooking(item.BookingId);
-                return Index();
+                return RedirectToAction("Index");
             }
             else
             {
