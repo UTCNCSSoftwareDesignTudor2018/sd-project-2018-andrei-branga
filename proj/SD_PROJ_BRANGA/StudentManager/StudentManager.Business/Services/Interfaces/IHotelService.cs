@@ -21,5 +21,9 @@ namespace Restaurant.Business.Services.Services
         void DeleteRoomOffer(int roomOffer);
         RoomModel GetRoom(int id);
         IQueryable<RoomOfferModel> GetSuitableRoomOffers(int roomTypeId, DateTime startDate, DateTime endDate);
+        IQueryable<BookingModel> GetAllBookingsForUser(int useriD);
+        void CancelBooking(int bookingId);
+        void ConfirmBooking(int bookingId);
+        int AddBooking(int UserId, int OfferId, DateTime start, DateTime end);
     }
 }

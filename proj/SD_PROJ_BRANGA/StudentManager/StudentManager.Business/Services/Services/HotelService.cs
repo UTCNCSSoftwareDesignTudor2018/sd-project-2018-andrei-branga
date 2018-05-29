@@ -162,8 +162,56 @@ namespace Restaurant.Business.Services.Services
 
 
 
+        public IQueryable<BookingModel> GetAllBookingsForUser(int useriD)
+        {
+            return ctx.Bookings.Include(p=>p.RoomOffer.HotelRoom.Hotel.HotelChain)
+                .Include(p=>p.RoomOffer.HotelRoom.RoomType).Where(p => p.UserId == useriD).ProjectTo<BookingModel>();
+        }
 
 
+        public void CancelBooking(int bookingId)
+        {
+            try
+            {
+                ctx.Bookings.Remove(ctx.Bookings.Single(p => p.BookingId == bookingId));
+                ctx.SaveChanges();
+            }
+            catch (Exception e)
+            {
+                throw new Exception("Cannot cancel booking because it has related stuff!");
+            }
+        }
 
+
+        public void ConfirmBooking(int bookingId)
+        {
+            var booking = ctx.Bookings.Single(p => p.BookingId == bookingId);
+            booking.Confirmed = true;
+
+            ctx.SaveChanges();
+        }
+
+
+        public int AddBooking(int UserId, int OfferId, DateTime start, DateTime end)
+        {
+            var offer = ctx.RoomOffers.Single(p => p.OfferId == OfferId);
+
+            Booking booking=new Booking()
+            {
+                UserId = UserId,
+                OfferId = OfferId,
+                StartDate = start,
+                EndDate = end,
+                PricePerNight = offer.Price,
+                Confirmed = false,
+
+                TotalPrice = offer.Price*((start-end).Days)
+            };
+            ctx.Bookings.Add(booking);
+            ctx.SaveChanges();
+            return booking.BookingId;
+        }
+
+        
     }
 }

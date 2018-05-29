@@ -306,5 +306,44 @@ namespace Restaurant.MVC.Controllers
 
             return PartialView("SearchOfferGridView", model);
         }
+
+
+        [ValidateInput(false)]
+        public ActionResult BookingsGridView()
+        {
+            var user = AutoMapper.Mapper.Map<UserViewModel>(
+                userService.GetUserForIdentityId(User.Identity.GetUserId()));
+            var model = hotelServicé.GetAllBookingsForUser(user.UserId).ProjectTo<BookingViewModel>().ToList();
+
+            return PartialView(model);
+        }
+
+        public ActionResult ConfirmBooking(int offerId,DateTime start,DateTime end)
+        {
+            var user = AutoMapper.Mapper.Map<UserViewModel>(
+                userService.GetUserForIdentityId(User.Identity.GetUserId()));
+            int id = hotelServicé.AddBooking(user.UserId, offerId, start, end);
+
+            var model = AutoMapper.Mapper.Map<BookingViewModel>(hotelServicé.GetAllBookingsForUser(user.UserId)
+                .Single(p => p.BookingId == id));
+
+            return View(model);
+        }
+
+        [HttpPost]
+        [ValidateAntiForgeryToken]
+        public ActionResult ConfirmBooking([ModelBinder(typeof(DevExpress.Web.Mvc.DevExpressEditorsBinder))]  BookingViewModel item)
+        {
+
+            if (ModelState.IsValid)
+            {
+                hotelServicé.ConfirmBooking(item.BookingId);
+                return Index();
+            }
+            else
+            {
+                return View(item);
+            }
+        }
     }
 }

@@ -229,6 +229,7 @@
     <Compile Include="Models\Account\IdentityModels.cs" />
     <Compile Include="Models\Account\ManageViewModels.cs" />
     <Compile Include="Models\Account\UserViewModel.cs" />
+    <Compile Include="Models\BookingViewModel.cs" />
     <Compile Include="Models\HotelChainViewModel.cs" />
     <Compile Include="Models\HotelViewModel.cs" />
     <Compile Include="Models\RoomOfferViewModel.cs" />
@@ -1439,6 +1440,8 @@
     <Content Include="Views\Home\SearchView.cshtml" />
     <Content Include="Views\Home\SearchResultsView.cshtml" />
     <Content Include="Views\Home\SearchOfferGridView.cshtml" />
+    <Content Include="Views\Home\BookingsGridView.cshtml" />
+    <Content Include="Views\Home\ConfirmBooking.cshtml" />
   </ItemGroup>
   <ItemGroup>
     <Folder Include="App_Data\" />
