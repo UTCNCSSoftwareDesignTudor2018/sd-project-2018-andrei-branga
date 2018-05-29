@@ -159,5 +159,11 @@ namespace Restaurant.Business.Services.Services
                        && p.EndDate>=endDate
                     ).ProjectTo<RoomOfferModel>();
         }
+
+
+
+
+
+
     }
 }

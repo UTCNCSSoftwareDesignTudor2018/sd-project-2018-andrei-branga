@@ -14,6 +14,12 @@ namespace Restaurant.Data.Entities
     
     public partial class User
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public User()
+        {
+            this.Bookings = new HashSet<Booking>();
+        }
+    
         public int UserId { get; set; }
         public string Id { get; set; }
         public string LastName { get; set; }
@@ -23,5 +29,7 @@ namespace Restaurant.Data.Entities
     
         public virtual AspNetUser AspNetUser { get; set; }
         public virtual HotelChain HotelChain { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

@@ -83,6 +83,9 @@
     <Compile Include="Entities\AspNetUserLogin.cs">
       <DependentUpon>HotelDbEntities.tt</DependentUpon>
     </Compile>
+    <Compile Include="Entities\Booking.cs">
+      <DependentUpon>HotelDbEntities.tt</DependentUpon>
+    </Compile>
     <Compile Include="Entities\Hotel.cs">
       <DependentUpon>HotelDbEntities.tt</DependentUpon>
     </Compile>

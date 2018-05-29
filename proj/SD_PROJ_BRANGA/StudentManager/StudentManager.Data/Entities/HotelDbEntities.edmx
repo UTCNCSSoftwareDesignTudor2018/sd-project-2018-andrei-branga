@@ -56,6 +56,19 @@
           <Property Name="AccessFailedCount" Type="int" Nullable="false" />
           <Property Name="UserName" Type="nvarchar" MaxLength="256" Nullable="false" />
         </EntityType>
+        <EntityType Name="Bookings">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="int" StoreGeneratedPattern="Identity" Nullable="false" />
+          <Property Name="UserId" Type="int" Nullable="false" />
+          <Property Name="OfferId" Type="int" Nullable="false" />
+          <Property Name="StartDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="EndDate" Type="datetime2" Precision="7" Nullable="false" />
+          <Property Name="PricePerNight" Type="float" Nullable="false" />
+          <Property Name="TotalPrice" Type="float" Nullable="false" />
+          <Property Name="Confirmed" Type="bit" Nullable="false" />
+        </EntityType>
         <EntityType Name="HotelChains">
           <Key>
             <PropertyRef Name="HotelChainId" />
@@ -142,6 +155,30 @@
               <PropertyRef Name="Id" />
             </Principal>
             <Dependent Role="AspNetUserRoles">
+              <PropertyRef Name="UserId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_RoomOffers">
+          <End Role="RoomOffers" Type="Self.RoomOffers" Multiplicity="1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomOffers">
+              <PropertyRef Name="OfferId" />
+            </Principal>
+            <Dependent Role="Bookings">
+              <PropertyRef Name="OfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Users">
+          <End Role="Users" Type="Self.Users" Multiplicity="1" />
+          <End Role="Bookings" Type="Self.Bookings" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="Users">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Bookings">
               <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
@@ -252,6 +289,7 @@
           <EntitySet Name="AspNetUserLogins" EntityType="Self.AspNetUserLogins" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUserRoles" EntityType="Self.AspNetUserRoles" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="AspNetUsers" EntityType="Self.AspNetUsers" Schema="dbo" store:Type="Tables" />
+          <EntitySet Name="Bookings" EntityType="Self.Bookings" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HotelChains" EntityType="Self.HotelChains" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="HotelRooms" EntityType="Self.HotelRooms" Schema="dbo" store:Type="Tables" />
           <EntitySet Name="Hotels" EntityType="Self.Hotels" Schema="dbo" store:Type="Tables" />
@@ -266,6 +304,14 @@
           <AssociationSet Name="FK_AspNetUserRoles_AspNetUser" Association="Self.FK_AspNetUserRoles_AspNetUser">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
             <End Role="AspNetUserRoles" EntitySet="AspNetUserRoles" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_RoomOffers" Association="Self.FK_Bookings_RoomOffers">
+            <End Role="RoomOffers" EntitySet="RoomOffers" />
+            <End Role="Bookings" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Users" Association="Self.FK_Bookings_Users">
+            <End Role="Users" EntitySet="Users" />
+            <End Role="Bookings" EntitySet="Bookings" />
           </AssociationSet>
           <AssociationSet Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId" Association="Self.FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
             <End Role="AspNetUsers" EntitySet="AspNetUsers" />
@@ -376,6 +422,7 @@
           <NavigationProperty Name="AspNetUser" Relationship="Self.FK_Users_AspNetUsers" FromRole="Users" ToRole="AspNetUsers" />
           <Property Name="HotelChainId" Type="Int32" />
           <NavigationProperty Name="HotelChain" Relationship="HotelBookingDBModel.FK_Users_HotelChains" FromRole="User" ToRole="HotelChain" />
+          <NavigationProperty Name="Bookings" Relationship="HotelBookingDBModel.FK_Bookings_Users" FromRole="User" ToRole="Booking" />
         </EntityType>
         <Association Name="FK_dbo_AspNetUserClaims_dbo_AspNetUsers_UserId">
           <End Role="AspNetUsers" Type="Self.AspNetUser" Multiplicity="1">
@@ -468,6 +515,15 @@
           <AssociationSet Name="FK_RoomOffers_HotelRooms" Association="HotelBookingDBModel.FK_RoomOffers_HotelRooms">
             <End Role="HotelRoom" EntitySet="HotelRooms" />
             <End Role="RoomOffer" EntitySet="RoomOffers" />
+          </AssociationSet>
+          <EntitySet Name="Bookings" EntityType="HotelBookingDBModel.Booking" />
+          <AssociationSet Name="FK_Bookings_RoomOffers" Association="HotelBookingDBModel.FK_Bookings_RoomOffers">
+            <End Role="RoomOffer" EntitySet="RoomOffers" />
+            <End Role="Booking" EntitySet="Bookings" />
+          </AssociationSet>
+          <AssociationSet Name="FK_Bookings_Users" Association="HotelBookingDBModel.FK_Bookings_Users">
+            <End Role="User" EntitySet="Users" />
+            <End Role="Booking" EntitySet="Bookings" />
           </AssociationSet>
         </EntityContainer>
         <EntityType Name="HotelChain">
@@ -571,6 +627,7 @@
           <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="7" />
           <Property Name="Price" Type="Double" Nullable="false" />
           <NavigationProperty Name="HotelRoom" Relationship="HotelBookingDBModel.FK_RoomOffers_HotelRooms" FromRole="RoomOffer" ToRole="HotelRoom" />
+          <NavigationProperty Name="Bookings" Relationship="HotelBookingDBModel.FK_Bookings_RoomOffers" FromRole="RoomOffer" ToRole="Booking" />
         </EntityType>
         <Association Name="FK_RoomOffers_HotelRooms">
           <End Type="HotelBookingDBModel.HotelRoom" Role="HotelRoom" Multiplicity="1" />
@@ -581,6 +638,45 @@
             </Principal>
             <Dependent Role="RoomOffer">
               <PropertyRef Name="RoomId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <EntityType Name="Booking">
+          <Key>
+            <PropertyRef Name="BookingId" />
+          </Key>
+          <Property Name="BookingId" Type="Int32" Nullable="false" annotation:StoreGeneratedPattern="Identity" />
+          <Property Name="UserId" Type="Int32" Nullable="false" />
+          <Property Name="OfferId" Type="Int32" Nullable="false" />
+          <Property Name="StartDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="EndDate" Type="DateTime" Nullable="false" Precision="7" />
+          <Property Name="PricePerNight" Type="Double" Nullable="false" />
+          <Property Name="TotalPrice" Type="Double" Nullable="false" />
+          <NavigationProperty Name="RoomOffer" Relationship="HotelBookingDBModel.FK_Bookings_RoomOffers" FromRole="Booking" ToRole="RoomOffer" />
+          <NavigationProperty Name="User" Relationship="HotelBookingDBModel.FK_Bookings_Users" FromRole="Booking" ToRole="User" />
+          <Property Name="Confirmed" Type="Boolean" Nullable="false" />
+        </EntityType>
+        <Association Name="FK_Bookings_RoomOffers">
+          <End Type="HotelBookingDBModel.RoomOffer" Role="RoomOffer" Multiplicity="1" />
+          <End Type="HotelBookingDBModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="RoomOffer">
+              <PropertyRef Name="OfferId" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="OfferId" />
+            </Dependent>
+          </ReferentialConstraint>
+        </Association>
+        <Association Name="FK_Bookings_Users">
+          <End Type="HotelBookingDBModel.User" Role="User" Multiplicity="1" />
+          <End Type="HotelBookingDBModel.Booking" Role="Booking" Multiplicity="*" />
+          <ReferentialConstraint>
+            <Principal Role="User">
+              <PropertyRef Name="UserId" />
+            </Principal>
+            <Dependent Role="Booking">
+              <PropertyRef Name="UserId" />
             </Dependent>
           </ReferentialConstraint>
         </Association>
@@ -713,6 +809,20 @@
                 <ScalarProperty Name="StartDate" ColumnName="StartDate" />
                 <ScalarProperty Name="RoomId" ColumnName="RoomId" />
                 <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+              </MappingFragment>
+            </EntityTypeMapping>
+          </EntitySetMapping>
+          <EntitySetMapping Name="Bookings">
+            <EntityTypeMapping TypeName="HotelBookingDBModel.Booking">
+              <MappingFragment StoreEntitySet="Bookings">
+                <ScalarProperty Name="Confirmed" ColumnName="Confirmed" />
+                <ScalarProperty Name="TotalPrice" ColumnName="TotalPrice" />
+                <ScalarProperty Name="PricePerNight" ColumnName="PricePerNight" />
+                <ScalarProperty Name="EndDate" ColumnName="EndDate" />
+                <ScalarProperty Name="StartDate" ColumnName="StartDate" />
+                <ScalarProperty Name="OfferId" ColumnName="OfferId" />
+                <ScalarProperty Name="UserId" ColumnName="UserId" />
+                <ScalarProperty Name="BookingId" ColumnName="BookingId" />
               </MappingFragment>
             </EntityTypeMapping>
           </EntitySetMapping>

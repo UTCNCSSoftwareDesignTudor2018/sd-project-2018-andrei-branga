@@ -35,6 +35,13 @@ namespace Restaurant.MVC
                     ;
                 cfg.CreateMap<RoomModel, RoomViewModel>();
 
+                cfg.CreateMap<Booking, BookingModel>()
+                    .ForMember(dst => dst.Hotel, opt => opt.MapFrom(src => src.RoomOffer.HotelRoom.Hotel.HotelName))
+                    .ForMember(dst => dst.Chain, opt => opt.MapFrom(src => src.RoomOffer.HotelRoom.Hotel.HotelChain.HotelChainName))
+                    .ForMember(dst => dst.RoomType, opt => opt.MapFrom(src => src.RoomOffer.HotelRoom.RoomType.RoomType1));
+                ;
+                cfg.CreateMap<BookingModel, BookingViewModel>();
+
 
                 cfg.CreateMap<RoomOffer, RoomOfferModel>()
                     .ForMember(dst => dst.RoomName, opt => opt.MapFrom(src => src.HotelRoom.RoomName))

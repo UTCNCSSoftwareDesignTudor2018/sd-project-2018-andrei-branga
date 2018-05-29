@@ -14,6 +14,12 @@ namespace Restaurant.Data.Entities
     
     public partial class RoomOffer
     {
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2214:DoNotCallOverridableMethodsInConstructors")]
+        public RoomOffer()
+        {
+            this.Bookings = new HashSet<Booking>();
+        }
+    
         public int OfferId { get; set; }
         public int RoomId { get; set; }
         public System.DateTime StartDate { get; set; }
@@ -21,5 +27,7 @@ namespace Restaurant.Data.Entities
         public double Price { get; set; }
     
         public virtual HotelRoom HotelRoom { get; set; }
+        [System.Diagnostics.CodeAnalysis.SuppressMessage("Microsoft.Usage", "CA2227:CollectionPropertiesShouldBeReadOnly")]
+        public virtual ICollection<Booking> Bookings { get; set; }
     }
 }

@@ -25,6 +25,9 @@
         <AssociationConnector Association="HotelBookingDBModel.FK_HotelRooms_RoomTypes" />
         <EntityTypeShape EntityType="HotelBookingDBModel.RoomOffer" Width="1.5" PointX="7.5" PointY="11" />
         <AssociationConnector Association="HotelBookingDBModel.FK_RoomOffers_HotelRooms" />
+        <EntityTypeShape EntityType="HotelBookingDBModel.Booking" Width="1.5" PointX="9.75" PointY="8.5" />
+        <AssociationConnector Association="HotelBookingDBModel.FK_Bookings_RoomOffers" />
+        <AssociationConnector Association="HotelBookingDBModel.FK_Bookings_Users" />
       </Diagram>
     </edmx:Diagrams>
   </edmx:Designer>

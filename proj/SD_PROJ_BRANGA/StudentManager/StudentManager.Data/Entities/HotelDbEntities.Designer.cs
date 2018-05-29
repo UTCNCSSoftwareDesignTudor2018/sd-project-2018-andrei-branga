@@ -1,4 +1,4 @@
-﻿// T4 code generation is enabled for model 'C:\Users\andrei\Documents\SD_PROJ_BRANGA\StudentManager\StudentManager.Data\Entities\HotelDbEntities.edmx'. 
+﻿// T4 code generation is enabled for model 'C:\Users\andrei\Documents\sd-project-2018-andrei-branga\proj\SD_PROJ_BRANGA\StudentManager\StudentManager.Data\Entities\HotelDbEntities.edmx'. 
 // To enable legacy code generation, change the value of the 'Code Generation Strategy' designer
 // property to 'Legacy ObjectContext'. This property is available in the Properties Window when the model
 // is open in the designer.

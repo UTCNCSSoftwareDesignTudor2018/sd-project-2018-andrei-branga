@@ -70,6 +70,7 @@
     <Reference Include="System.Xml" />
   </ItemGroup>
   <ItemGroup>
+    <Compile Include="Models\BookingModel.cs" />
     <Compile Include="Models\HotelChainModel.cs" />
     <Compile Include="Models\HotelModel.cs" />
     <Compile Include="Models\RoomModel.cs" />

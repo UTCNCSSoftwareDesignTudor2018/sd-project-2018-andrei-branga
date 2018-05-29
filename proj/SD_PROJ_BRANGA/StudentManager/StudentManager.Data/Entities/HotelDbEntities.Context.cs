@@ -36,5 +36,6 @@ namespace Restaurant.Data.Entities
         public virtual DbSet<HotelRoom> HotelRooms { get; set; }
         public virtual DbSet<RoomType> RoomTypes { get; set; }
         public virtual DbSet<RoomOffer> RoomOffers { get; set; }
+        public virtual DbSet<Booking> Bookings { get; set; }
     }
 }
