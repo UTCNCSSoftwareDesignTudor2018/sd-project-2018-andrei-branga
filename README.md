@@ -2,7 +2,6 @@ Branga Andrei
 
 1.Architecture styles:
     - Layered architecture
-    - Database-centric architecture
 
 2.Design Patterns:
     - MVC
@@ -18,10 +17,9 @@ Branga Andrei
     - AutoMapper
 
 5.Unit Tests
-    - Microsoft Unit Test Framework
 
 6.Input Validation
-    - Javascript input validation
+    - Model Validation
 
 7.One-one
 Room-RoomType
