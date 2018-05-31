@@ -2,9 +2,9 @@ Branga Andrei
 
 1.Architecture styles:
     - Layered architecture
+    - MVC
 
 2.Design Patterns:
-    - MVC
     - Factory method
 
 3.Frameworks
